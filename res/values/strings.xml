@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AccelerometerApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="write_exel">write exel file</string>
+    <string name="read_exel">read exel file</string>
+    <string name="start_move">Начать считывание</string>
+    <string name="end_move">Закончить и записать</string>
+    <string name="showData">Информация</string>
+    <string name="calibration">Калибровка</string>
+
+</resources>
