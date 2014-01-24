@@ -41,7 +41,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	private final static String TAG1 = "Значение";
 	final String DIR_SD = "AccelerationData";
 	final String FILENAME_SD = "data.txt";
-	private final static String fileNameAngle = "Angles.xls";
 	private final static String fileNameProection = "Proections.xls";
 	StringBuilder sb = new StringBuilder();
 	SensorManager sensorManager;
@@ -68,6 +67,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	public double distancia_x = 0.0;
 	public double distancia_y = 0.0;
+	public double distancia_z = 0.0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +140,8 @@ public class MainActivity extends Activity implements OnClickListener {
 				CalculateSrValue(temp_arrayAlpha_x, temp_arrayAlpha_y,
 						temp_arrayAlpha_z);
 				distancia_x = 0.0;
+				distancia_y = 0.0;
+				distancia_z = 0.0;
 			}
 
 		}
@@ -172,9 +174,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 
 
-						arrayAlpha_x.add(globalI, tempX - sr_x);
-						arrayAlpha_y.add(globalI, tempY - sr_y);
-						arrayAlpha_z.add(globalI, tempZ - sr_z);
+						arrayAlpha_x.add(globalI, tempX);
+						arrayAlpha_y.add(globalI, tempY);
+						arrayAlpha_z.add(globalI, tempZ);
 						
 						globalI++;
 					
@@ -252,73 +254,72 @@ public class MainActivity extends Activity implements OnClickListener {
 				int y0 = 1;
 				for (int i = 0; i < globalI; i++) {
 					sheet.addCell(new Label(0, y0, Double.toString(
-							VectorAbs(arrayAlpha_x.get(i), arrayAlpha_y.get(i),
-									arrayAlpha_z.get(i))).replace('.', ',')));
+							roundDoubleValue(VectorAbs(arrayAlpha_x.get(i), arrayAlpha_y.get(i),
+									arrayAlpha_z.get(i)))).replace('.', ',')));
 					y0++;
 				}
 				int y1 = 1;
 				for (int i = 0; i < globalI; i++) {
 					sheet.addCell(new Label(1, y1, Double.toString(
-							arrayAlpha_x.get(i)).replace('.', ',')));
-							distancia_x = distancia_x + (arrayAlpha_x.get(i)*0.0004)/2;
+							roundDoubleValue(arrayAlpha_x.get(i))).replace('.', ',')));
+							distancia_x = distancia_x + (arrayAlpha_x.get(i)*0.0036)/2;
 					y1++;
 				}
 				int y2 = 1;
 				for (int i = 0; i < globalI; i++) {
 					sheet.addCell(new Label(2, y2, Double.toString(
-							arrayAlpha_y.get(i)).replace('.', ',')));
-							distancia_y = distancia_y + (arrayAlpha_y.get(i)*0.0004)/2;
+							roundDoubleValue(arrayAlpha_y.get(i))).replace('.', ',')));
+							distancia_y = distancia_y + (arrayAlpha_y.get(i)*0.0036)/2;
 					y2++;
 				}
 				int y3 = 1;
 				for (int i = 0; i < globalI; i++) {
 					sheet.addCell(new Label(3, y3, Double.toString(
-							arrayAlpha_z.get(i)).replace('.', ',')));
+							roundDoubleValue(arrayAlpha_z.get(i))).replace('.', ',')));
+							distancia_z = distancia_z + (arrayAlpha_z.get(i)*0.0036)/2;
 					y3++;
 				}
 				int y4 = 1;
 				double v_x = 0.0;
 				for (int i = 0; i < globalI; i++) {
-					sheet.addCell(new Label(4, y4, Double.toString(v_x)));
+					sheet.addCell(new Label(4, y4, Double.toString(roundDoubleValue(v_x))));
 					v_x = v_x + arrayAlpha_x.get(i) * 0.06;
-					Log.d("Скорость", Double.toString((double)(Math.round(v_x*1000))/1000));
+					Log.d("Скорость Х", Double.toString(roundDoubleValue(v_x)));
 					y4++;
 				}
 				int y5 = 1;
 				double v_y = 0.0;
 				for (int i = 0; i < globalI; i++) {
-					sheet.addCell(new Label(5, y5, Double.toString(v_y
-							+ arrayAlpha_y.get(i) * 0.6)));
+					sheet.addCell(new Label(5, y5, Double.toString(roundDoubleValue(v_y))));
 					v_y = v_y + arrayAlpha_y.get(i) * 0.06;
 					y5++;
 				}
 				int y6 = 1;
 				double v_z = 0.0;
 				for (int i = 0; i < globalI; i++) {
-					sheet.addCell(new Label(6, y6, Double.toString(v_z
-							+ arrayAlpha_z.get(i) * 0.6)));
+					sheet.addCell(new Label(6, y6, Double.toString(roundDoubleValue(v_z))));
 					v_z = v_z + arrayAlpha_z.get(i) * 0.06;
 					y6++;
 				}
 				int y7 = 1;
 				double s_x = 0.0;
 				for (int i = 0; i < globalI; i++) {
-					sheet.addCell(new Label(7, y7, Double.toString(s_x)));
+					sheet.addCell(new Label(7, y7, Double.toString(roundDoubleValue(s_x))));
 					s_x = s_x + (arrayAlpha_x.get(i)*0.06*0.06)/2;
 					y7++;
 				}
 				int y8 = 1;
 				double s_y = 0.0;
 				for (int i = 0; i < globalI; i++) {
-					sheet.addCell(new Label(8, y8, Double.toString(s_y)));
-					s_y = s_y + (arrayAlpha_x.get(i)*0.02*0.02)/2;
+					sheet.addCell(new Label(8, y8, Double.toString(roundDoubleValue(s_y))));
+					s_y = s_y + (arrayAlpha_x.get(i)*0.06*0.06)/2;
 					y8++;
 				}
 				int y9 = 1;
 				double s_z = 0.0;
 				for (int i = 0; i < globalI; i++) {
-					sheet.addCell(new Label(9, y9, Double.toString(s_z)));
-					s_z = s_z + (arrayAlpha_x.get(i)*0.02*0.02)/2;
+					sheet.addCell(new Label(9, y9, Double.toString(roundDoubleValue(s_z))));
+					s_z = s_z + (arrayAlpha_x.get(i)*0.06*0.06)/2;
 					y9++;
 				}
 			} catch (RowsExceededException e) {
@@ -339,8 +340,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		Toast.makeText(getApplicationContext(), "Запись закончена",
 				Toast.LENGTH_SHORT).show();
-		Log.d("Дистанция", Double.toString(distancia_x));
-		Log.d("Дистанция", Double.toString(distancia_y));
+		Log.d("Дистанция", Double.toString(Math.abs(distancia_x*10)));
+		Log.d("Дистанция", Double.toString(Math.abs(distancia_y*10)));
+		Log.d("Дистанция", Double.toString(Math.abs(distancia_z*10)));
 	}
 
 	String format(float values[]) {
@@ -386,6 +388,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		Log.d("Среднее по Х", Double.toString(sr_x));
 		Log.d("Среднее по Y", Double.toString(sr_y));
 		Log.d("Среднее по Z", Double.toString(sr_z));
+	}
+	
+	public double roundDoubleValue(double value){
+		
+		value  = (double)(Math.round(value*100))/100;
+		
+		return value;
 	}
 
 }
